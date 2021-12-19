@@ -28,7 +28,7 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && dpkg-reconfigure --frontend=noninteractive locales
 
 # Create dev user
-RUN adduser --group --gid 1000 dev \
+RUN addgroup --gid 1000 dev \
     && adduser --system --shell /bin/zsh --uid 1000 --gecos "" --gid 1000 \
         --disabled-password dev
 
