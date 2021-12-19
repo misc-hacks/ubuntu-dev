@@ -1,0 +1,29 @@
+name: build-dev
+
+on:
+  pull_request:
+    branches:
+    - v20.04
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag ${{ github.repository }}
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository }}
+          VERSION=$(echo "${{ github.event.pull_request.base.ref_name }}" | sed -e 's/^v//')
+          docker tag ${{ github.repository }} ${IMAGE_ID}:${VERSION}
+          docker push ${IMAGE_ID}:${VERSION}
