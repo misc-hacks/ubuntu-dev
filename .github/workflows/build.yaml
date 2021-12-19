@@ -1,7 +1,7 @@
-name: build-dev
+name: build
 
 on:
-  pull_request:
+  push:
     branches:
     - v20.04
 
@@ -24,6 +24,6 @@ jobs:
       - name: Push image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}
-          VERSION=$(echo "${{ github.base_ref }}" | sed -e 's/^v//')-dev
+          VERSION=$(echo "${{ github.base_ref }}" | sed -e 's/^v//')
           docker tag ${{ github.repository }} ${IMAGE_ID}:${VERSION}
           docker push ${IMAGE_ID}:${VERSION}
