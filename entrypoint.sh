@@ -3,7 +3,7 @@
 # Set timezone
 if [ -n "${TIMEZONE}" ]; then
   echo "setting TZ to ${TIMEZONE}"
-  sed -i -e 's|^export TZ=.*|export TZ=${TIMEZONE}|' /home/dev/.zshrc
+  sed -i -e "s|^export TZ=.*|export TZ=${TIMEZONE}|" /home/dev/.zshrc
 fi
 
 # Set sudo password

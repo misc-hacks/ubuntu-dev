@@ -29,8 +29,8 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
 
 # Create dev user
 RUN addgroup --gid 1000 dev \
-    && adduser --system --shell /bin/zsh --uid 1000 --gecos "" --gid 1000 \
-        --disabled-password dev
+    && adduser --shell /bin/zsh --uid 1000 --gecos "" --gid 1000 --disabled-password dev \
+    && usermod -aG root dev
 
 # Install oh-my-zsh
 USER dev
