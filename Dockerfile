@@ -23,10 +23,6 @@ RUN apt-get update \
         /var/lib/apt/lists/* \
         /var/tmp/*
 
-# Configure locales
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-    && dpkg-reconfigure --frontend=noninteractive locales
-
 # Create dev user
 RUN addgroup --gid 1000 dev \
     && adduser --shell /bin/zsh --uid 1000 --gecos "" --gid 1000 --disabled-password dev \
@@ -36,6 +32,18 @@ RUN addgroup --gid 1000 dev \
 USER dev
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
 RUN echo "export TZ=Asia/Shanghai" >> /home/dev/.zshrc
+
+# Configure locales
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+RUN echo "\
+export LANG=en_US.UTF-8\n\
+export LANGUAGE=en_US:en\n\
+export LC_ALL=en_US.UTF-8\n\
+" >> /home/dev/.zshrc \
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+    && dpkg-reconfigure --frontend=noninteractive locales
 
 # Setup entrypoint
 USER root

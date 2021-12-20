@@ -13,11 +13,13 @@ if [ -n "${SUDO_PASSWORD_HASH}" ]; then
 fi
 
 # Load keys from PUBLIC_KEY_DIR
-if [ -d ${PUBLIC_KEY_DIR} ]; then
-  cd ${PUBLIC_KEY_DIR}
-  mkdir -p /home/dev/.ssh
-  cat * > /home/dev/.ssh/authorized_keys
-  chown -R dev:dev /home/dev/.ssh
+if [ -n ${PUBLIC_KEY_DIR} ]; then
+  if [ -d ${PUBLIC_KEY_DIR} ]; then
+    cd ${PUBLIC_KEY_DIR}
+    mkdir -p /home/dev/.ssh
+    cat * > /home/dev/.ssh/authorized_keys
+    chown -R dev:dev /home/dev/.ssh
+  fi
 fi
 
 # Start ssh service
