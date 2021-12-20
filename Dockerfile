@@ -31,9 +31,11 @@ RUN addgroup --gid 1000 dev \
 # Install oh-my-zsh
 USER dev
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
+USER root
+
+# Configure timezone and locales
 RUN echo "export TZ=Asia/Shanghai" >> /home/dev/.zshrc
 
-# Configure locales
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
@@ -46,7 +48,6 @@ export LC_ALL=en_US.UTF-8\n\
     && dpkg-reconfigure --frontend=noninteractive locales
 
 # Setup entrypoint
-USER root
 COPY ./entrypoint.sh /entrypoint.sh
 COPY ./pause.sh /pause.sh
 RUN chmod +x /*.sh
